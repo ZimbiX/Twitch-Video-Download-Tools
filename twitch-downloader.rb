@@ -3,10 +3,11 @@
 require 'rest-client'
 
 require 'json'
+require 'uri'
 
 def fetch uri, name = nil
   puts "Fetching #{name} from: #{uri}" if name
-  RestClient.get(uri)
+  RestClient.get(URI.escape(uri))
 end
 
 if __FILE__ == $0
