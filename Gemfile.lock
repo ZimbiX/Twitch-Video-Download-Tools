@@ -1,22 +1,61 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print (1.6.1)
+    byebug (5.0.0)
+      columnize (= 0.9.0)
+    coderay (1.1.0)
+    columnize (0.9.0)
+    coolline (0.5.0)
+      unicode_utils (~> 1.4)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
+    hirb (0.7.3)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    jazz_fingers (3.0.0)
+      awesome_print (~> 1.6)
+      hirb (~> 0.7)
+      pry (~> 0.10)
+      pry-byebug (~> 3.1)
+      pry-coolline (~> 0.2)
+      pry-doc (~> 0.6)
+      pry-remote (>= 0.1.7)
+    method_source (0.8.2)
     mime-types (2.6.1)
     netrc (0.10.3)
+    pry (0.10.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.2.0)
+      byebug (~> 5.0)
+      pry (~> 0.10)
+    pry-coolline (0.2.5)
+      coolline (~> 0.5)
+    pry-doc (0.8.0)
+      pry (~> 0.9)
+      yard (~> 0.8)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    slop (3.6.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    unicode_utils (1.4.0)
+    yard (0.8.7.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  jazz_fingers
   rest-client
+
+BUNDLED WITH
+   1.10.6
