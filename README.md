@@ -2,4 +2,4 @@
 Download Twitch.tv VODs.
 
 ## Usage
-`ruby download.rb <url>`
+`./download.rb <url>`
