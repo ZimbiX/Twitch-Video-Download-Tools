@@ -42,7 +42,7 @@ if __FILE__ == $0
     chunk_list.each_with_index do |part, i|
       url = "#{dl_url}/#{part}"
       pct = pct_format % (i / list_size.to_f)
-      progress = "%4d" % (i+1) + " of " + list_size
+      progress = "%4d" % (i+1) + " of #{list_size}"
       puts "  #{pct} - #{progress}: #{url}"
       resp = fetch(url)
       file.write(resp.body)
