@@ -8,6 +8,11 @@ require 'shellwords'
 
 module MirrorTwitchChannel
 
+  def mirror_channel channel
+    videos = api_video_list_for_channel channel
+    download_videos videos
+  end
+
   def api_video_list_for_channel channel
     api_url = "https://api.twitch.tv/kraken/channels/#{channel}/videos?broadcasts=true&limit=100"
     headers = {
@@ -50,7 +55,6 @@ module MirrorTwitchChannel
 end
 
 if __FILE__ == $0
-  videos = api_video_list_for_channel ARGV[0]
   # require 'pry'; binding.pry
-  MirrorTwitchChannel.download_videos videos
+  MirrorTwitchChannel.mirror_channel ARGV[0]
 end
