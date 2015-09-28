@@ -7,22 +7,8 @@ require_relative 'ruby-progressbar-twoline/ruby-progressbar-twoline.rb'
 require 'json'
 require 'uri'
 
-def fetch uri, name = nil
-  puts "Fetching #{name} from: #{uri}" if name
-  RestClient.get(URI.escape(uri))
-end
-
-if __FILE__ == $0
-
-  if ARGV.length != 1
-    puts "Usage: download.rb <url>"
-    exit
-  end
-
-  url = ARGV[0]
-
+def download_video_by_url url
   puts "Downloading #{url}"
-
   vod_id = url.split("/")[-1]
 
   token_url = "https://api.twitch.tv/api/vods/#{vod_id}/access_token?as3=t"
@@ -35,9 +21,16 @@ if __FILE__ == $0
   chunk_list = fetch(chunk_list_url, "chunk list").split("\n").select { |c| c[0] != '#' && c != '' }
 
   dl_url = "http://#{chunk_list_url.split("/")[2..-2].join("/")}"
-  pct_format = "%2.3f%"
+  download_video_chunks dl_url, chunk_list, vod_id
+end
 
-  open("#{vod_id}.ts", "wb") do |file|
+def fetch uri, name = nil
+  puts "Fetching #{name} from: #{uri}" if name
+  RestClient.get(URI.escape(uri))
+end
+
+def download_video_chunks dl_url, chunk_list, filename
+  open("#{filename}.ts", "wb") do |file|
     list_size = chunk_list.size
     progressbar = ProgressBar.create(
       format: "%t %b%i\n%a %E Processed: %c of %C, %P%",
@@ -48,10 +41,18 @@ if __FILE__ == $0
     chunk_list.each_with_index do |part, i|
       url = "#{dl_url}/#{part}"
       progressbar.log(url)
-      resp = fetch(url)
-      file.write(resp.body)
+      response = fetch(url)
+      file.write(response.body)
       progressbar.increment
     end
   end
+end
 
+if __FILE__ == $0
+  if ARGV.length != 1
+    puts "Usage: download.rb <url>"
+    exit
+  end
+  url = ARGV[0]
+  download_video_by_url url
 end
