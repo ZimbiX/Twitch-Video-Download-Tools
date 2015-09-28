@@ -49,7 +49,7 @@ module TwitchDownloader
 
   def download_video_chunks dl_url, chunk_list, filename
     chunk_list = try_resume chunk_list, filename
-    open("#{filename}.ts", "wb") do |file|
+    open("#{filename}.ts", "ab") do |file|
       list_size = chunk_list.size
       progressbar = ProgressBar.create(
         format: "%t %b%i\n%a %E Processed: %c of %C, %P%",
