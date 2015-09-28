@@ -35,7 +35,7 @@ module TwitchDownloader
 
   def chunk_list_io chunk_list
     if File.exist? "chunk_list.txt"
-      chunk_list_prev = IO.read("chunk_list.txt").split("\n")
+      chunk_list_prev = IO.read("chunk_list.txt").gsub("\r",'').split("\n")
       if chunk_list != chunk_list_prev
         puts "WARNING: chunk list differs from last attempt - using previous list"
         File.open("chunk_list_new_conflicted.txt", 'w') { |f| f.write chunk_list.join("\n") }
@@ -44,10 +44,11 @@ module TwitchDownloader
     else
       File.open("chunk_list.txt", 'w') { |f| f.write chunk_list.join("\n") }
     end
+    chunk_list
   end
 
   def download_video_chunks dl_url, chunk_list, filename
-    chunk_list = try_resume_chunk_list chunk_list, filename
+    chunk_list = try_resume chunk_list, filename
     open("#{filename}.ts", "wb") do |file|
       list_size = chunk_list.size
       progressbar = ProgressBar.create(
@@ -78,14 +79,14 @@ module TwitchDownloader
 
   def try_resume chunk_list, filename
     return chunk_list unless File.exist? "chunk_list_done.txt"
-    chunk_list_tried_prev = IO.read("chunk_list_done.txt").split("\n")
+    chunk_list_tried_prev = IO.read("chunk_list_done.txt").gsub("\r",'').split("\n")
     if File.exist? "chunk_list_failed.txt"
-      chunk_list_tried_prev += IO.read("chunk_list_failed.txt").split("\n")
+      chunk_list_tried_prev += IO.read("chunk_list_failed.txt").gsub("\r",'').split("\n")
     end
     return chunk_list unless chunk_list_tried_prev.size >= 1
     return [] unless chunk_list_tried_prev.size < chunk_list.size # Already finished
     next_chunk = chunk_list_tried_prev.size
-    chunk_list_resume = chunk_list[next_chunk..-1]
+    chunk_list[next_chunk..-1]
   end
 end
 
