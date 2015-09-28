@@ -22,7 +22,7 @@ module TwitchDownloader
 
     chunk_list_url = qualities_list.split("\n")[3].gsub(%r{/(high|medium|low|mobile)/},'/chunked/')
     chunk_list = fetch(chunk_list_url, "chunk list").split("\n").select { |c| c[0] != '#' && c != '' }
-    File.open("chunk_list.txt", 'w') { |f| f.write chunk_list.join("\n") }
+    chunk_list = chunk_list_io chunk_list
 
     dl_url = "http://#{chunk_list_url.split("/")[2..-2].join("/")}"
     download_video_chunks dl_url, chunk_list, vod_id
@@ -33,7 +33,21 @@ module TwitchDownloader
     RestClient.get(URI.escape(uri))
   end
 
+  def chunk_list_io chunk_list
+    if File.exist? "chunk_list.txt"
+      chunk_list_prev = IO.read("chunk_list.txt").split("\n")
+      if chunk_list != chunk_list_prev
+        puts "WARNING: chunk list differs from last attempt - using previous list"
+        File.open("chunk_list_new_conflicted.txt", 'w') { |f| f.write chunk_list.join("\n") }
+        chunk_list = chunk_list_prev
+      end
+    else
+      File.open("chunk_list.txt", 'w') { |f| f.write chunk_list.join("\n") }
+    end
+  end
+
   def download_video_chunks dl_url, chunk_list, filename
+    chunk_list = try_resume_chunk_list chunk_list, filename
     open("#{filename}.ts", "wb") do |file|
       list_size = chunk_list.size
       progressbar = ProgressBar.create(
@@ -48,6 +62,7 @@ module TwitchDownloader
         begin
           response = fetch(url)
           file.write(response.body)
+          File.open("chunk_list_done.txt", 'a') { |f| f.puts part }
         rescue => e
           progressbar.log("Exception encountered: #{e}")
           progressbar.log(response.inspect)
@@ -60,6 +75,17 @@ module TwitchDownloader
     end
   end
 
+  def try_resume chunk_list, filename
+    return chunk_list unless File.exist? "chunk_list_done.txt"
+    chunk_list_tried_prev = IO.read("chunk_list_done.txt").split("\n")
+    if File.exist? "chunk_list_failed.txt"
+      chunk_list_tried_prev += IO.read("chunk_list_failed.txt").split("\n")
+    end
+    return chunk_list unless chunk_list_tried_prev.size >= 1
+    return [] unless chunk_list_tried_prev.size < chunk_list.size # Already finished
+    next_chunk = chunk_list_tried_prev.size
+    chunk_list_resume = chunk_list[next_chunk..-1]
+  end
 end
 
 if __FILE__ == $0
