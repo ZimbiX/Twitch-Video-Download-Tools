@@ -47,6 +47,7 @@ if __FILE__ == $0
     puts "Downloading #{list_size} video parts..."
     chunk_list.each_with_index do |part, i|
       url = "#{dl_url}/#{part}"
+      progressbar.log(url)
       resp = fetch(url)
       file.write(resp.body)
       progressbar.increment
