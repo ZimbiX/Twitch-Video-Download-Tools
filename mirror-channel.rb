@@ -32,11 +32,11 @@ module MirrorTwitchChannel
       title = v["title"]
       id = url.split('/').last
       name = "%s - %s - %s" % [date, id, title]
-      download_video_to_folder url, name
+      download_video_to_folder url, name, v
     end
   end
 
-  def download_video_to_folder url, name
+  def download_video_to_folder url, name, metadata
     if Dir.exist? name
       puts "SKIPPED - directory already exists: #{name}"
     else
@@ -45,6 +45,7 @@ module MirrorTwitchChannel
       Dir.mkdir name
       name_escaped = Shellwords.escape name
       Dir.chdir name do
+        File.open("metadata.json", 'w') { |f| f.write metadata.to_json }
         TwitchDownloader.download_video_by_url url
       end
     end
