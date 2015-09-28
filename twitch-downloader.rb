@@ -22,6 +22,7 @@ module TwitchDownloader
 
     chunk_list_url = qualities_list.split("\n")[3].gsub(%r{/(high|medium|low|mobile)/},'/chunked/')
     chunk_list = fetch(chunk_list_url, "chunk list").split("\n").select { |c| c[0] != '#' && c != '' }
+    File.open("chunk_list.txt", 'w') { |f| f.write chunk_list.join("\n") }
 
     dl_url = "http://#{chunk_list_url.split("/")[2..-2].join("/")}"
     download_video_chunks dl_url, chunk_list, vod_id
@@ -49,6 +50,7 @@ module TwitchDownloader
           file.write(response.body)
         rescue => e
           progressbar.log("Exception encountered: #{e}")
+          progressbar.log(response.inspect)
           progressbar.log(e.backtrace)
           progressbar.log("Continuing to download the rest of the video")
         end
