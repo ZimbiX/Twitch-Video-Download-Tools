@@ -4,8 +4,6 @@ require 'unirest'
 
 require_relative 'twitch-downloader.rb'
 
-require 'shellwords'
-
 module MirrorTwitchChannel
   module_function
 
@@ -39,17 +37,16 @@ module MirrorTwitchChannel
   end
 
   def download_video_to_folder url, name, metadata
+    puts "Downloading: #{name}"
+    puts "=" * 80
     if Dir.exist? name
-      puts "SKIPPED - directory already exists: #{name}"
+      puts "Will be attempting to resume - directory already exists"
     else
-      puts "Downloading: #{name}"
-      puts "=" * 80
       Dir.mkdir name
-      name_escaped = Shellwords.escape name
-      Dir.chdir name do
-        File.open("metadata.json", 'w') { |f| f.write metadata.to_json }
-        TwitchDownloader.download_video_by_url url
-      end
+    end
+    Dir.chdir name do
+      File.open("metadata.json", 'w') { |f| f.write metadata.to_json }
+      TwitchDownloader.download_video_by_url url
     end
   end
 
