@@ -8,6 +8,7 @@ require 'json'
 require 'uri'
 
 module TwitchDownloader
+  module_function
 
   def download_video_by_url url
     puts "Downloading #{url}"

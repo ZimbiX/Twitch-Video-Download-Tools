@@ -7,6 +7,7 @@ require_relative 'twitch-downloader.rb'
 require 'shellwords'
 
 module MirrorTwitchChannel
+  module_function
 
   def mirror_channel channel
     videos = api_video_list_for_channel channel
@@ -39,7 +40,7 @@ module MirrorTwitchChannel
     if Dir.exist? name
       puts "SKIPPED - directory already exists: #{name}"
     else
-      puts "Downloading: #{name}",
+      puts "Downloading: #{name}"
       puts "=" * 80
       Dir.mkdir name
       name_escaped = Shellwords.escape name
