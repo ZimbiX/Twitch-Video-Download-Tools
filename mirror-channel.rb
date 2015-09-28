@@ -52,6 +52,10 @@ module MirrorTwitchChannel
 end
 
 if __FILE__ == $0
+  if ARGV.length != 1 or ['--help', '-h'].include? ARGV[0]
+    puts "Usage: #{__FILE__} <channel_name>"
+    exit
+  end
   # require 'pry'; binding.pry
   MirrorTwitchChannel.mirror_channel ARGV[0]
 end

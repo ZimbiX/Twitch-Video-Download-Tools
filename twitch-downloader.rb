@@ -53,8 +53,8 @@ module TwitchDownloader
 end
 
 if __FILE__ == $0
-  if ARGV.length != 1
-    puts "Usage: download.rb <url>"
+  if ARGV.length != 1 or ['--help', '-h'].include? ARGV[0]
+    puts "Usage: #{__FILE__} <url>"
     exit
   end
   url = ARGV[0]
