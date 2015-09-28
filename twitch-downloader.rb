@@ -58,7 +58,8 @@ module TwitchDownloader
       puts "Downloading #{list_size} video parts..."
       chunk_list.each_with_index do |part, i|
         url = "#{dl_url}/#{part}"
-        progressbar.log(url)
+        pct = progressbar.percentage_completed_with_precision
+        progressbar.log("#{pct}% #{url}")
         begin
           response = fetch(url)
           file.write(response.body)
