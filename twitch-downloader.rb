@@ -52,6 +52,7 @@ module TwitchDownloader
           progressbar.log("Exception encountered: #{e}")
           progressbar.log(response.inspect)
           progressbar.log(e.backtrace)
+          File.open("chunk_list_failed.txt", 'a') { |f| f.puts part }
           progressbar.log("Continuing to download the rest of the video")
         end
         progressbar.increment
