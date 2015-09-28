@@ -27,6 +27,7 @@ module MirrorTwitchChannel
   end
 
   def download_videos videos
+    puts "#{videos.size} videos to download"
     videos.each do |v|
       date = v["recorded_at"].gsub('Z','').gsub('T','_').gsub(':','-')
       url = v["url"]
