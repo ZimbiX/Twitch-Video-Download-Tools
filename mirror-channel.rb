@@ -16,9 +16,10 @@ module MirrorTwitchChannel
 
   def api_video_list_for_channel channel
     api_url = "https://api.twitch.tv/kraken/channels/#{channel}/videos?broadcasts=true&limit=100"
+    client_id = IO.read(File.expand_path('.twitch-developer-client-id', File.dirname(__FILE__))).chomp
     headers = {
       "Accept" => "application/vnd.twitchtv.v3+json",
-      "Client-ID" => IO.read('.twitch-developer-client-id').chomp,
+      "Client-ID" => client_id,
     }
     puts "Querying API..."
     response = Unirest.get api_url, headers: headers
