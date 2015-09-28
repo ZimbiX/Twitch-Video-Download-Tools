@@ -1,0 +1,3 @@
+[submodule "ruby-progressbar-twoline"]
+	path = ruby-progressbar-twoline
+	url = git@github.com:ZimbiX/ruby-progressbar-twoline.git

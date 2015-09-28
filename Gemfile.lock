@@ -43,6 +43,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    ruby-progressbar (1.7.5)
     slop (3.6.0)
     unf (0.1.4)
       unf_ext
@@ -56,6 +57,7 @@ PLATFORMS
 DEPENDENCIES
   jazz_fingers
   rest-client
+  ruby-progressbar
 
 BUNDLED WITH
    1.10.6

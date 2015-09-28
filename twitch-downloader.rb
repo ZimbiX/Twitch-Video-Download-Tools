@@ -2,6 +2,8 @@
 
 require 'rest-client'
 
+require_relative 'ruby-progressbar-twoline/ruby-progressbar-twoline.rb'
+
 require 'json'
 require 'uri'
 
@@ -37,17 +39,18 @@ if __FILE__ == $0
 
   open("#{vod_id}.ts", "wb") do |file|
     list_size = chunk_list.size
+    progressbar = ProgressBar.create(
+      format: "%t %b%i\n%a %E Processed: %c of %C, %P%",
+      total: list_size,
+      remainder_mark: '･',
+    )
     puts "Downloading #{list_size} video parts..."
     chunk_list.each_with_index do |part, i|
       url = "#{dl_url}/#{part}"
-      pct = pct_format % (i / list_size.to_f * 100)
-      progress = "%4d" % (i+1) + " of #{list_size}"
-      puts "  #{pct} - #{progress}: #{url}"
       resp = fetch(url)
       file.write(resp.body)
+      progressbar.increment
     end
   end
-
-  puts pct_format % 100 + " - Done"
 
 end
