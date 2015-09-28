@@ -39,17 +39,14 @@ module MirrorTwitchChannel
     if Dir.exist? name
       puts "SKIPPED - directory already exists: #{name}"
     else
-      puts "Downloading: #{name}"
+      puts "Downloading: #{name}",
+      puts "=" * 80
       Dir.mkdir name
       name_escaped = Shellwords.escape name
       Dir.chdir name do
-        download_video
+        TwitchDownloader.download_video_by_url url
       end
     end
-  end
-
-  def download_video
-
   end
 
 end
