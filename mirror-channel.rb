@@ -11,7 +11,7 @@ module MirrorTwitchChannel
 
   def mirror_channel channel
     videos = api_video_list_for_channel channel
-    download_videos videos
+    download_videos videos.reverse
   end
 
   def api_video_list_for_channel channel
