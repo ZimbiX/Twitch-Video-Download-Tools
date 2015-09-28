@@ -44,8 +44,14 @@ module TwitchDownloader
       chunk_list.each_with_index do |part, i|
         url = "#{dl_url}/#{part}"
         progressbar.log(url)
-        response = fetch(url)
-        file.write(response.body)
+        begin
+          response = fetch(url)
+          file.write(response.body)
+        rescue => e
+          progressbar.log("Exception encountered: #{e}")
+          progressbar.log(e.backtrace)
+          progressbar.log("Continuing to download the rest of the video")
+        end
         progressbar.increment
       end
     end
