@@ -10,22 +10,36 @@ Resuming downloads is supported and happens automatically when you restart the s
 
 ### Setup
 
-Install [Ruby](https://www.ruby-lang.org/en/) (on Windows, use (RubyInstaller)[http://rubyinstaller.org/]), and make sure it's in your system's PATH variable.
+Once this setup hassle is complete, you can run Ruby programs in future without having to do so again.
 
-[Download](https://github.com/ZimbiX/Twitch-Video-Download-Tools/archive/master.zip) and extract these tools.
+#### Ruby
 
-Then open a terminal window into that folder (on Windows, Shift + Right-click in the folder > "Open command window here") and run:
+Install [Ruby](https://www.ruby-lang.org/en/). On Windows, use the following list of steps for Ruby 2.2.3:
 
-    gem install bundler
-    bundle --without development
+- [Download RubyInstaller](http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3.exe)
+- Install Ruby using RubyInstaller, selecting the option to add it to your PATH variable
+- [Download the Development Kit](http://dl.bintray.com/oneclick/rubyinstaller/DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe)
+- Extract the Development Kit to `C:\Ruby22\DevKit`
+- Install the Development Kit:
+    + Open `C:\Ruby22\DevKit`
+    + Open a terminal window into that folder: Shift + Right-click in the folder -> "Open command window here"
+        * Run `ruby dk.rb init`
+        * Run `ruby dk.rb review`
+        * Run `ruby dk.rb install`
 
-to install the Ruby gems that these tools depend on.
+#### These tools
 
-When running a Ruby program on Windows, replace `./` with `ruby `
+- [Download](https://github.com/ZimbiX/Twitch-Video-Download-Tools/archive/master.zip) and extract these tools
+- Open a terminal window into that folder as above
+    + Install the Ruby gems that these tools depend on:
+        * Run: `gem install bundler`
+        * Run: `bundle --without development`
 
 ### Usage
 
     ./twitch-downloader.rb URL
+
+When running a Ruby program on Windows, you need to replace `./` with `ruby `
 
 ## Mirror Channel
 
