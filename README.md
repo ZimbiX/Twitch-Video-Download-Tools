@@ -41,6 +41,8 @@ Install [Ruby](https://www.ruby-lang.org/en/). On Windows, use the following lis
 
 When running a Ruby program on Windows, you need to replace `./` with `ruby `
 
+Videos play best in [VLC media player](http://www.videolan.org/vlc/).
+
 ## Mirror Channel
 
 This tool utilises the downloader library to download all of the currently available past broadcasts for a channel. As this may take some time depending on your internet connection, VODs are downloaded in descending order of age.
