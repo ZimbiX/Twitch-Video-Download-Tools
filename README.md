@@ -8,13 +8,24 @@ A command-line tool and library that can be used to download a Twitch.tv VOD. It
 
 Resuming downloads is supported and happens automatically when you restart the script, but it only works correctly if you keep the accompanying chunk list files intact.
 
+### Setup
+
+Install [Ruby](https://www.ruby-lang.org/en/) (on Windows, use (RubyInstaller)[http://rubyinstaller.org/]), and make sure it's in your system's PATH variable.
+
+[Download](https://github.com/ZimbiX/Twitch-Video-Download-Tools/archive/master.zip) and extract these tools.
+
+Then open a terminal window into that folder (on Windows, Shift + Right-click in the folder > "Open command window here") and run:
+
+    gem install bundler
+    bundle
+
+to install the Ruby gems that these tools depend on.
+
+When running a Ruby program on Windows, replace `./` with `ruby `
+
 ### Usage
 
     ./twitch-downloader.rb URL
-
-### How it works
-
-See [Adam Bronte's blog post](https://adam.bronte.me/2015/05/29/downloading-twitch-tv-vods/)
 
 ## Mirror Channel
 
@@ -23,6 +34,12 @@ This tool utilises the downloader library to download all of the currently avail
 You can keep running this script to keep your collection up-to-date. Older broadcasts and ones which have since been removed from Twitch will be kept.
 
 ### Setup
+
+#### General
+
+See above.
+
+#### Twitch API token
 
 To avoid rate limiting when acquiring a channel's video lists, you need to supply a application Client ID to the Twitch API.
 
@@ -39,6 +56,10 @@ or, to run in the background:
     nohup ./mirror-channel.rb CHANNEL_NAME > log.txt &
 
 ## Some technical details
+
+### How the video downloading works
+
+See [Adam Bronte's blog post](https://adam.bronte.me/2015/05/29/downloading-twitch-tv-vods/)
 
 ### Resuming downloads
 
