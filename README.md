@@ -17,7 +17,7 @@ Install [Ruby](https://www.ruby-lang.org/en/) (on Windows, use (RubyInstaller)[h
 Then open a terminal window into that folder (on Windows, Shift + Right-click in the folder > "Open command window here") and run:
 
     gem install bundler
-    bundle
+    bundle --without development
 
 to install the Ruby gems that these tools depend on.
 
