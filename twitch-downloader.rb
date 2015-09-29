@@ -54,7 +54,7 @@ module TwitchDownloader
       progressbar = ProgressBar.create(
         format: "%t %b%i\n%a %E Processed: %c of %C, %P%",
         total: list_size,
-        remainder_mark: '･',
+        remainder_mark: '-',
       )
       puts "Downloading #{list_size} video parts..."
       chunk_list.each_with_index do |part, i|
