@@ -41,7 +41,10 @@ Install [Ruby](https://www.ruby-lang.org/en/). On Windows, use the following lis
 
 When running a Ruby program on Windows, you need to replace `./` with `ruby `
 
-Videos play best in [VLC media player](http://www.videolan.org/vlc/).
+Videos play best in:
+
+- Desktop: [VLC media player](http://www.videolan.org/vlc/)
+- Android: [MX Player](https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad&hl=en) (use Software mode for seek functionality)
 
 ## Mirror Channel
 
