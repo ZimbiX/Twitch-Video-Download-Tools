@@ -20,7 +20,7 @@ module TwitchDownloader
     qualities_list_url = "http://usher.justin.tv/vod/#{vod_id}?nauthsig=#{token["sig"]}&nauth=#{token["token"]}"
     qualities_list = fetch(qualities_list_url, "qualities list")
 
-    chunk_list_url = qualities_list.split("\n")[3].gsub(%r{/(high|medium|low|mobile)/},'/chunked/')
+    chunk_list_url = qualities_list.split("\n").select { |l| l.start_with? "http" }[0].gsub(%r{/(high|medium|low|mobile)/},'/chunked/')
     chunk_list = fetch(chunk_list_url, "chunk list").split("\n").select { |c| c[0] != '#' && c != '' }
     chunk_list = chunk_list_io chunk_list
 
