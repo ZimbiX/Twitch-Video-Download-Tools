@@ -29,7 +29,7 @@ module MirrorTwitchChannel
     videos.each do |v|
       date = v["recorded_at"].gsub('Z','').gsub('T','_').gsub(':','-')
       url = v["url"]
-      title = v["title"]
+      title = v["title"].gsub(%r{[/:]},'_')
       id = url.split('/').last
       name = "%s - %s - %s" % [date, id, title]
       download_video_to_folder url, name, v
