@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'rest-client'
 gem 'unirest'
 gem 'ruby-progressbar'
 

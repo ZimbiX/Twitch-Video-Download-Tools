@@ -1,38 +1,44 @@
 #!/usr/bin/env ruby
 
-require 'rest-client'
+require 'unirest'
 
 require_relative 'ruby-progressbar-twoline/ruby-progressbar-twoline.rb'
 
 require 'json'
 require 'uri'
 
-module TwitchDownloader
-  module_function
+class TwitchDownloader
+  def initialize client_id
+    @client_id = client_id
+  end
 
-  def download_video_by_url url
+  def download url
     puts "Downloading #{url}"
     vod_id = url.split("/")[-1]
 
     token_url = "https://api.twitch.tv/api/vods/#{vod_id}/access_token?as3=t"
-    token = JSON.parse(fetch(token_url, "token"))
+    token = fetch(token_url, "token")
 
     qualities_list_url = "http://usher.justin.tv/vod/#{vod_id}?nauthsig=#{token["sig"]}&nauth=#{token["token"]}"
-    qualities_list = fetch(qualities_list_url, "qualities list")
+    qualities_list = fetch(qualities_list_url, "qualities list", json: false)
 
     chunk_list_url = qualities_list.split("\n").select { |l| l.start_with? "http" }[0].gsub(%r{/(high|medium|low|mobile)/},'/chunked/')
-    chunk_list = fetch(chunk_list_url, "chunk list").split("\n").select { |c| c[0] != '#' && c != '' }
+    chunk_list = fetch(chunk_list_url, "chunk list", json: false).split("\n").select { |c| c[0] != '#' && c != '' }
     chunk_list = chunk_list_io chunk_list
 
     dl_url = "http://#{chunk_list_url.split("/")[2..-2].join("/")}"
     download_video_chunks dl_url, chunk_list, vod_id
   end
 
-  def fetch uri, name = nil
-    puts "Fetching #{name} from: #{uri}" if name
-    RestClient.get(URI.escape(uri))
+  def fetch url, name = nil, json: true
+    puts "Fetching #{name} from: #{url}" if name
+    headers = { "Client-ID" => @client_id }
+    headers["Accept"] = "application/vnd.twitchtv.v3+json" if json
+    response = Unirest.get(URI.escape(url), headers: headers)
+    json ? response.body : response.raw_body
   end
 
+private
   def chunk_list_io chunk_list
     if File.exist? "chunk_list.txt"
       chunk_list_prev = IO.read("chunk_list.txt").gsub("\r",'').split("\n")
@@ -62,8 +68,8 @@ module TwitchDownloader
         pct = progressbar.percentage_completed_with_precision
         progressbar.log("#{pct}% #{url}")
         begin
-          response = fetch(url)
-          file.write(response.body)
+          chunk_data = fetch(url, json: false)
+          file.write chunk_data
           File.open("chunk_list_done.txt", 'a') { |f| f.puts part }
         rescue => e
           progressbar.log("Exception encountered: #{e}")
@@ -95,6 +101,6 @@ if __FILE__ == $0
     puts "Usage: #{__FILE__} <url>"
     exit
   end
-  url = ARGV[0]
-  TwitchDownloader.download_video_by_url url
+  client_id = IO.read(File.expand_path('.twitch-developer-client-id', File.dirname(__FILE__))).chomp
+  TwitchDownloader.new(client_id).download ARGV[0]
 end
