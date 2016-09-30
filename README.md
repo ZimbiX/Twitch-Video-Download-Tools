@@ -60,7 +60,7 @@ See above.
 
 #### Twitch API token
 
-To avoid rate limiting when acquiring a channel's video lists, you need to supply a application Client ID to the Twitch API.
+To avoid rate limiting when acquiring a channel's video lists, you need to supply an application Client ID to the Twitch API.
 
 [Create an API token](http://www.twitch.tv/kraken/oauth2/clients/new) using your account on Twitch, supplying a unique name, and `http://localhost` for the Redirect URI.
 
@@ -88,7 +88,7 @@ A VOD is downloaded by grabbing each ~600 KB chunk of MPEG-TS video and concaten
 
 MediaInfo on the other hand, *is* able to determine the length, but installing this as a dependency is not trivial.
 
-After investigating these, I realised that not only should it detect an imcomplete download, but it would also need a way to resume that download. Chunk information would have to be kept.
+After investigating these, I realised that not only should it detect an incomplete download, but it would also need a way to resume that download. Chunk information would have to be kept.
 
 ### Chunk HTTP 404s
 
@@ -101,3 +101,8 @@ Quite simply, **Twitch's VOD service is garbage**. Often, I've encountered unbea
 Those are the main reasons, but there's also the lack of keyboard shortcuts - No key to go back a few seconds? Come on - and a super simple one: you can't even see what time of day they streamed at!
 
 **If you find this and you're a Twitch admin, please do consider fixing the above issues before breaking these downloading tools. Thanks =)**
+
+# TODO
+
+- Fix installation instructions - missing the submodule
+- Add quality selection command-line argument to both utilities
